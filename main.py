@@ -1,4 +1,4 @@
-from utils.window_manager import WindowManager
+from crk_builder.utils.window_manager import WindowManager
 
 WINDOW_NAME: str = "BlueStacks App Player"
 
