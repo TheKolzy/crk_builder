@@ -20,10 +20,10 @@ class WindowManager:
         window_list: list = pgw.getWindowsWithTitle(self.__window_name)
 
         if not window_list:
-            print(f"[Error]: The \"{self.__window_name}\" window has not been found.")
+            print(f"[Error]: The \"{self.__window_name}\" window could not be found.")
             return False
 
-        # The first element in the list is the window
+        # The first element is the window
         self.__window = window_list[0]
         return True
 
@@ -31,6 +31,7 @@ class WindowManager:
         if self.__window.isMinimized:
             self.__window.restore()
 
+        # Bring the window to the foreground
         if not self.__window.isActive:
             self.__window.activate()
 
@@ -40,6 +41,7 @@ class WindowManager:
     def __is_fullscreen(self) -> bool:
         threshold: int = 1
         return (
+            # 0, 0, 1920, 1080
             abs(self.__window.left) <= threshold and
             abs(self.__window.top ) <= threshold and
             abs(self.__window.width  - pag.size().width ) <= threshold and
