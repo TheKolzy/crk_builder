@@ -38,10 +38,10 @@ class WindowManager:
             pag.press("F11")
 
     def __is_fullscreen(self) -> bool:
-        # Value +/- 1 with abs
+        # Error tolerance +/- 1 with abs function
         threshold: int = 1
         return (
-            # 0, 0, 1920, 1080
+            # For BS5 it's: 0, 0, 1920, 1080
             abs(self.__window.left) <= threshold and
             abs(self.__window.top ) <= threshold and
             abs(self.__window.width  - pag.size().width ) <= threshold and
