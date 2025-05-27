@@ -5,7 +5,7 @@ import pyautogui   as pag
 import pygetwindow as pgw
 
 class WindowManager:
-    def __init__(self, window_name: str) -> None:
+    def __init__(self, window_name: str):
         self.__window_name: str                   = window_name
         self.__window     : Optional[Win32Window] = None
 
@@ -17,7 +17,7 @@ class WindowManager:
 
     def __find_window(self) -> bool:
         # List of windows with this name
-        window_list: list = pgw.getWindowsWithTitle(self.__window_name)
+        window_list: list[Win32Window] = pgw.getWindowsWithTitle(self.__window_name)
 
         if not window_list:
             print(f"[Error]: The \"{self.__window_name}\" window could not be found.")
