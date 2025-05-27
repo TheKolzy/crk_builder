@@ -16,7 +16,6 @@ class WindowManager:
         self.__resize_window()
 
     def __find_window(self) -> bool:
-        # List of windows with this name
         window_list: list[Win32Window] = pgw.getWindowsWithTitle(self.__window_name)
 
         if not window_list:
@@ -39,6 +38,7 @@ class WindowManager:
             pag.press("F11")
 
     def __is_fullscreen(self) -> bool:
+        # Value +/- 1 with abs
         threshold: int = 1
         return (
             # 0, 0, 1920, 1080
