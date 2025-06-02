@@ -9,12 +9,13 @@ class WindowManager:
         self.__window_name: str                   = window_name
         self.__window     : Optional[Win32Window] = None
 
-    # Puts the window in full screen mode
-    def configure_window(self) -> None:
+    # Sets the window in full screen mode, assuming a screen size of 1920x1080
+    def configure_window(self) -> bool:
         if not self.__find_window():
-            return
+            return False
 
         self.__resize_window()
+        return True
 
     def __find_window(self) -> bool:
         window_list: list[Win32Window] = pgw.getWindowsWithTitle(self.__window_name)
