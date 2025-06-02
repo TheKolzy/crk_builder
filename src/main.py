@@ -3,6 +3,7 @@ from crk_builder.utils.window_manager import WindowManager
 
 # [Warning]: Make sure your BS5 instance is named as follows, otherwise it will not work
 WINDOW_NAME: str = "BlueStacks App Player"
+
 ROWS       : int = 1
 
 def main() -> None:
