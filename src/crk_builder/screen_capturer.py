@@ -5,9 +5,9 @@ import time
 
 class ScreenCapturer:
     def __init__(self, rows: int):
-        self.__rows          : int = rows
-        self.__topping_folder: str = ""
-        self.__topping_number: int = 1
+        self.__rows             : int = rows
+        self.__screenshot_folder: str = ""
+        self.__topping_number   : int = 1
 
         self.__reset_folder()
 
@@ -18,11 +18,11 @@ class ScreenCapturer:
         first_topping_y: int = 325  # (- Up  , + Down )
 
         # Offset to move to the next row or column
-        next_topping: int = 172
+        next_topping   : int = 172
 
         # Variables for the scrolling algorithm
-        current_block: int = 1 # Every 4 rows increases by 1
-        current_row  : int = 1
+        current_block  : int = 1 # Every 4 rows increases by 1
+        current_row    : int = 1
 
         # Iteration of the rows
         # In the range() function we increment by 1 because it's exclusive
@@ -32,7 +32,7 @@ class ScreenCapturer:
                     and self.__rows >= current_block * 4):
                 pag.click(1085, 325 + (next_topping * 3)) # Topping [4, 1]
                 pag.mouseDown()
-                pag.moveTo(1085, 117, duration = 1)    # Moves upward
+                pag.moveTo(1085, 117, duration = 1)       # Moves upward
                 time.sleep(0.5)
                 pag.mouseUp()
 
@@ -43,7 +43,7 @@ class ScreenCapturer:
             elif current_row > 4 and self.__rows < current_block * 4:
                 pag.click(1085, 325 + (next_topping * 3)) # Topping [4, 1]
                 pag.mouseDown()
-                pag.moveTo(1085, 659, duration = 1)    # Moves upward
+                pag.moveTo(1085, 659, duration = 1)       # Moves upward
                 time.sleep(0.5)
                 pag.mouseUp()
 
@@ -69,20 +69,21 @@ class ScreenCapturer:
             current_row += 1
 
     def __reset_folder(self) -> None:
-        current_path          : str = os.path.dirname(os.path.abspath(__file__))
-        self.__topping_folder : str = os.path.abspath(os.path.join(current_path
+        current_path             : str = os.path.dirname(os.path.abspath(__file__))
+        self.__screenshot_folder : str = os.path.abspath(os.path.join(current_path
             , "..", "..", "topping_screenshots"))
 
         # Delete and create a new folder every time
-        if os.path.exists(self.__topping_folder):
-            shutil.rmtree(self.__topping_folder)
-        if not os.path.exists(self.__topping_folder):
-            os.makedirs(self.__topping_folder)
+        if os.path.exists(self.__screenshot_folder):
+            shutil.rmtree(self.__screenshot_folder)
+        if not os.path.exists(self.__screenshot_folder):
+            os.makedirs(self.__screenshot_folder)
 
     def __take_screenshot(self) -> None:
-        topping_path: str = os.path.join(self.__topping_folder, "topping_capture_"
+        screenshot_path: str = os.path.join(self.__screenshot_folder, "topping_capture_"
             + str(self.__topping_number) + ".png")
+
         # X (+ Right, - Left), Y (+ Down, - Up), Width (+, -), Height (+, -)
         topping_screenshot = pag.screenshot(region = (120, 635, 740, 180))
-        topping_screenshot.save(topping_path)
+        topping_screenshot.save(screenshot_path)
         self.__topping_number += 1

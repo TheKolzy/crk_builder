@@ -8,14 +8,14 @@ WINDOW_NAME: str = "BlueStacks App Player"
 ROWS       : int = 1
 
 def main() -> None:
-    wm: WindowManager = WindowManager(WINDOW_NAME)
+    wm: WindowManager  = WindowManager(WINDOW_NAME)
     if not wm.configure_window():
         return
 
     sc: ScreenCapturer = ScreenCapturer(ROWS)
     sc.capture_screen()
 
-    te: TextExtractor = TextExtractor(ROWS)
+    te: TextExtractor  = TextExtractor(ROWS)
     te.process_images()
 
 if __name__ == "__main__":
