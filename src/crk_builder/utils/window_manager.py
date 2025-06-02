@@ -9,6 +9,7 @@ class WindowManager:
         self.__window_name: str                   = window_name
         self.__window     : Optional[Win32Window] = None
 
+    # Puts the window in full screen mode
     def configure_window(self) -> None:
         if not self.__find_window():
             return
