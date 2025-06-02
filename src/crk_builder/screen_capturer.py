@@ -69,8 +69,8 @@ class ScreenCapturer:
             current_row += 1
 
     def __reset_folder(self) -> None:
-        current_path             : str = os.path.dirname(os.path.abspath(__file__))
-        self.__screenshot_folder : str = os.path.abspath(os.path.join(current_path
+        current_path            : str = os.path.dirname(os.path.abspath(__file__))
+        self.__screenshot_folder: str = os.path.abspath(os.path.join(current_path
             , "..", "..", "topping_screenshots"))
 
         # Delete and create a new folder every time
