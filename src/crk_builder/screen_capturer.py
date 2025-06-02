@@ -1,9 +1,15 @@
+import os
 import pyautogui as pag
+import shutil
 import time
 
 class ScreenCapturer:
     def __init__(self, rows: int):
-        self.__rows: int = rows
+        self.__rows          : int = rows
+        self.__topping_folder: str = ""
+        self.__topping_number: int = 1
+
+        self.__reset_folder()
 
     # Iterate the specified number of rows and take screenshots
     def capture_screen(self) -> None:
@@ -47,7 +53,10 @@ class ScreenCapturer:
 
             # Iteration of the columns
             for column in range(1, 6):
+                time.sleep(0.125)
                 pag.click(first_topping_x, first_topping_y)
+                time.sleep(0.125)
+                self.__take_screenshot()
                 first_topping_x += next_topping  # Move to the next column
 
             # The entire row has been iterated, now start with the row below
@@ -58,3 +67,22 @@ class ScreenCapturer:
             if current_row % 4 == 0:
                 current_block += 1
             current_row += 1
+
+    def __reset_folder(self) -> None:
+        current_path          : str = os.path.dirname(os.path.abspath(__file__))
+        self.__topping_folder : str = os.path.abspath(os.path.join(current_path
+            , "..", "..", "topping_screenshots"))
+
+        # Delete and create a new folder every time
+        if os.path.exists(self.__topping_folder):
+            shutil.rmtree(self.__topping_folder)
+        if not os.path.exists(self.__topping_folder):
+            os.makedirs(self.__topping_folder)
+
+    def __take_screenshot(self) -> None:
+        topping_path: str = os.path.join(self.__topping_folder, "topping_capture_"
+            + str(self.__topping_number) + ".png")
+        # X (+ Right, - Left), Y (+ Down, - Up), Width (+, -), Height (+, -)
+        topping_screenshot = pag.screenshot(region = (120, 635, 740, 180))
+        topping_screenshot.save(topping_path)
+        self.__topping_number += 1
