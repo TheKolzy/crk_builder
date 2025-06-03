@@ -25,6 +25,85 @@ class SubstatOptimizer:
             optimized_list: list = self.__optimize_two_substats(substats)
             print_two_substats(optimized_list)
 
+        # Case of 3 substats
+        if len(substats) == 3:
+            optimized_list: list = self.__optimize_three_substats(substats)
+            print_three_substats(optimized_list)
+
+    def __optimize_three_substats(self, substats: tuple[int, ...]) -> list:
+        # Help list to find the specified substats
+        substat_list: list = [self.__atk_list, self.__atk_spd_list, self.__crit_list
+            , self.__cd_list, self.__dr_list]
+
+        # List with the optimized values
+        optimized_list: list = []
+
+        substat_one_list  : list = substat_list[substats[0]]  # First  substat list requested
+        substat_two_list  : list = substat_list[substats[1]]  # Second substat list requested
+        substat_three_list: list = substat_list[substats[2]]  # Third  substat list requested
+
+        # Lists with toppings that include the two specified substats
+        matched_substat_one  : list = []
+        matched_substat_two  : list = []
+        matched_substat_three: list = []
+
+        # Check and put in the new lists the toppings that contain these three substats
+        # topping_one/two/three is the tuple (topping_position, topping_value)
+        for topping_one in substat_one_list:
+            for topping_two in substat_two_list:
+                # topping_one[0] is the position of the topping
+                if topping_one[0] == topping_two[0]:
+                    # The current topping contains the two substats
+                    # But we need to contain three not two
+                    for topping_three in substat_three_list:
+                        if topping_one[0] == topping_three[0]:
+                            # The current topping contains the three substats
+                            # topping_one[1] is the value of the topping
+                            matched_substat_one.append((topping_one[0], topping_one[1]))
+                            matched_substat_two.append((topping_two[0], topping_two[1]))
+                            matched_substat_three.append((topping_three[0], topping_three[1]))
+
+        for topping_one, topping_two, topping_three in (zip
+            (matched_substat_one, matched_substat_two, matched_substat_three)):
+            # Will be used to store and insert the optimized value in the list
+            optimized_value: float = 0
+
+            # Checks are carried out three times, once for the first list, once for the second list and once for the third list
+            # substats[0] is the first substat specified, substats[1] is the second substat specified
+            # substats[2] is the third substat specified
+            # topping_one/two/three[1] is the value of the topping
+
+            # ATK, ATK SPD, CRIT%
+            if substats[0] in (0, 1, 2):
+                optimized_value += topping_one[1] / 3.0
+            if substats[1] in (0, 1, 2):
+                optimized_value += topping_two[1] / 3.0
+            if substats[2] in (0, 1, 2):
+                optimized_value += topping_three[1] / 3.0
+
+            # CD
+            if substats[0] == 3:
+                optimized_value += topping_one[1] / 2.0
+            if substats[1] == 3:
+                optimized_value += topping_two[1] / 2.0
+            if substats[2] == 3:
+                optimized_value += topping_three[1] / 2.0
+
+            # CD
+            if substats[0] == 4:
+                optimized_value += topping_one[1] / 6.0
+            if substats[1] == 4:
+                optimized_value += topping_two[1] / 6.0
+            if substats[2] == 4:
+                optimized_value += topping_three[1] / 6.0
+
+            # We add the value to the optimized list
+            # topping_one[0] is the topping position
+            # As they are the same, it doesn't matter
+            optimized_list.append((topping_one[0], optimized_value))
+
+        return optimized_list
+
     def __optimize_two_substats(self, substats: tuple[int, ...]) -> list:
         # Help list to find the specified substats
         substat_list: list = [self.__atk_list, self.__atk_spd_list, self.__crit_list
@@ -137,5 +216,14 @@ def print_two_substats(optimized_list: list) -> None:
     optimized_list.sort(key=lambda x: x[1], reverse=True)
 
     print("[The maximum value with 2 substats is: 2.0]")
+    for topping_position, topping_score in optimized_list:
+        print(f"Topping Position ({topping_position}): Score => {topping_score}")
+
+def print_three_substats(optimized_list: list) -> None:
+    # We order from the highest to lowest optimized value
+    # x[1] represents the second element of the tuple, meaning the optimized value
+    optimized_list.sort(key=lambda x: x[1], reverse=True)
+
+    print("[The maximum value with 3 substats is: 3.0]")
     for topping_position, topping_score in optimized_list:
         print(f"Topping Position ({topping_position}): Score => {topping_score}")
