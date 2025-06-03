@@ -215,15 +215,19 @@ def print_two_substats(optimized_list: list) -> None:
     # x[1] represents the second element of the tuple, meaning the optimized value
     optimized_list.sort(key=lambda x: x[1], reverse=True)
 
+    iterator: int = 1
     print("[The maximum value with 2 substats is: 2.0]")
     for topping_position, topping_score in optimized_list:
-        print(f"Topping Position ({topping_position}): Score => {topping_score}")
+        print(f"[{iterator}] Topping Position ({topping_position}): Score => {topping_score}")
+        iterator += 1
 
 def print_three_substats(optimized_list: list) -> None:
     # We order from the highest to lowest optimized value
     # x[1] represents the second element of the tuple, meaning the optimized value
     optimized_list.sort(key=lambda x: x[1], reverse=True)
 
+    iterator: int = 1
     print("[The maximum value with 3 substats is: 3.0]")
     for topping_position, topping_score in optimized_list:
-        print(f"Topping Position ({topping_position}): Score => {topping_score}")
+        print(f"[{iterator}] Topping Position ({topping_position}): Score => {topping_score}")
+        iterator += 1
