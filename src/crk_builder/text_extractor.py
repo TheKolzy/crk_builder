@@ -9,7 +9,7 @@ class TextExtractor:
         self.__topping_count: int = rows * 5
 
     def process_images(self) -> None:
-        # Creation of paths
+        # Get paths
         current_path     : str = os.path.dirname(os.path.abspath(__file__))
         screenshot_folder: str = os.path.abspath(os.path.join(current_path
             , "..", "..", "topping_screenshots"))

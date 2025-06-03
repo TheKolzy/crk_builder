@@ -74,7 +74,7 @@ class ScreenCapturer:
             current_row += 1
 
     def __reset_folder(self) -> None:
-        # Creation of paths
+        # Get paths
         current_path            : str = os.path.dirname(os.path.abspath(__file__))
         self.__screenshot_folder: str = os.path.abspath(os.path.join(current_path
             , "..", "..", "topping_screenshots"))
@@ -86,7 +86,7 @@ class ScreenCapturer:
             os.makedirs(self.__screenshot_folder)
 
     def __take_screenshot(self) -> None:
-        # Creation of paths
+        # Get paths
         screenshot_path: str = os.path.join(self.__screenshot_folder, "topping_capture_"
             + str(self.__topping_number) + ".png")
 
@@ -94,4 +94,5 @@ class ScreenCapturer:
         # X (+ Right, - Left), Y (+ Down, - Up), Width (+, -), Height (+, -)
         topping_screenshot: Image = pag.screenshot(region = (120, 635, 740, 180))
         topping_screenshot.save(screenshot_path)
+        # It ensures that each image has a number according to the topping number
         self.__topping_number += 1

@@ -6,6 +6,7 @@ import re
 class SubstatOptimizer:
     def __init__(self):
         # List of tuples: (topping number, value)
+        # I also specify the number of each list for later use
         self.__atk_list    : list = [] # 0
         self.__atk_spd_list: list = [] # 1
         self.__crit_list   : list = [] # 2
@@ -17,7 +18,7 @@ class SubstatOptimizer:
 
     # Extracts the topping number and its substat in the list that belongs to it.
     def __extract_substats(self) -> None:
-        # Creation of paths
+        # Get paths
         current_path: str = os.path.dirname(os.path.abspath(__file__))
         text_path   : str = os.path.abspath(os.path.join(current_path
             , "..", "..", "topping_substats.txt"))
