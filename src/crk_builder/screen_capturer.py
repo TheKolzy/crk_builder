@@ -1,3 +1,5 @@
+from PIL import Image
+
 import os
 import pyautogui as pag
 import shutil
@@ -23,6 +25,9 @@ class ScreenCapturer:
         # Variables for the scrolling algorithm
         current_block  : int = 1 # Every 4 rows increases by 1
         current_row    : int = 1
+
+        # Safety timeout for the window to be maximized
+        time.sleep(1)
 
         # Iteration of the rows
         # In the range() function we increment by 1 because it's exclusive
@@ -53,9 +58,9 @@ class ScreenCapturer:
 
             # Iteration of the columns
             for column in range(1, 6):
-                time.sleep(0.125)
+                time.sleep(0.25)
                 pag.click(first_topping_x, first_topping_y)
-                time.sleep(0.125)
+                time.sleep(0.25)
                 self.__take_screenshot()
                 first_topping_x += next_topping  # Move to the next column
 
@@ -84,6 +89,6 @@ class ScreenCapturer:
             + str(self.__topping_number) + ".png")
 
         # X (+ Right, - Left), Y (+ Down, - Up), Width (+, -), Height (+, -)
-        topping_screenshot = pag.screenshot(region = (120, 635, 740, 180))
+        topping_screenshot: Image = pag.screenshot(region = (120, 635, 740, 180))
         topping_screenshot.save(screenshot_path)
         self.__topping_number += 1
