@@ -74,20 +74,23 @@ class ScreenCapturer:
             current_row += 1
 
     def __reset_folder(self) -> None:
+        # Creation of paths
         current_path            : str = os.path.dirname(os.path.abspath(__file__))
         self.__screenshot_folder: str = os.path.abspath(os.path.join(current_path
             , "..", "..", "topping_screenshots"))
 
-        # Delete and create a new folder every time
+        # Delete and create a new screenshot folder every time
         if os.path.exists(self.__screenshot_folder):
             shutil.rmtree(self.__screenshot_folder)
         if not os.path.exists(self.__screenshot_folder):
             os.makedirs(self.__screenshot_folder)
 
     def __take_screenshot(self) -> None:
+        # Creation of paths
         screenshot_path: str = os.path.join(self.__screenshot_folder, "topping_capture_"
             + str(self.__topping_number) + ".png")
 
+        # Adjust X and Y first, then Width and Height
         # X (+ Right, - Left), Y (+ Down, - Up), Width (+, -), Height (+, -)
         topping_screenshot: Image = pag.screenshot(region = (120, 635, 740, 180))
         topping_screenshot.save(screenshot_path)
