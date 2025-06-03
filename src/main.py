@@ -8,6 +8,10 @@ WINDOW_NAME: str = "BlueStacks App Player"
 
 ROWS       : int = 1
 
+# You can only specify 2 or 3 substats
+# | 0 ATK | 1 ATK SPD | 2 CRIT% | 3 Cooldown | 4 DMG Resist |
+SUBSTATS   : tuple[int, ...] = (3, 4)
+
 def main() -> None:
     wm: WindowManager    = WindowManager(WINDOW_NAME)
     if not wm.configure_window():
@@ -20,7 +24,7 @@ def main() -> None:
     te.process_images()
 
     so: SubstatOptimizer = SubstatOptimizer()
-    so.perform_optimization()
+    so.perform_optimization(SUBSTATS)
 
 if __name__ == "__main__":
     main()
