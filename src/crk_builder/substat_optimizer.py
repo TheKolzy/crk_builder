@@ -42,7 +42,7 @@ class SubstatOptimizer:
         substat_two_list  : list = substat_list[substats[1]]  # Second substat list requested
         substat_three_list: list = substat_list[substats[2]]  # Third  substat list requested
 
-        # Lists with toppings that include the two specified substats
+        # Lists with toppings that include the three specified substats
         matched_substat_one  : list = []
         matched_substat_two  : list = []
         matched_substat_three: list = []
@@ -81,7 +81,7 @@ class SubstatOptimizer:
             if substats[2] in (0, 1, 2):
                 optimized_value += topping_three[1] / 3.0
 
-            # CD
+            # Cooldown
             if substats[0] == 3:
                 optimized_value += topping_one[1] / 2.0
             if substats[1] == 3:
@@ -89,7 +89,7 @@ class SubstatOptimizer:
             if substats[2] == 3:
                 optimized_value += topping_three[1] / 2.0
 
-            # CD
+            # Damage Resist
             if substats[0] == 4:
                 optimized_value += topping_one[1] / 6.0
             if substats[1] == 4:
@@ -144,13 +144,13 @@ class SubstatOptimizer:
             if substats[1] in (0, 1, 2):
                 optimized_value += topping_two[1] / 3.0
 
-            # CD
+            # Cooldown
             if substats[0] == 3:
                 optimized_value += topping_one[1] / 2.0
             if substats[1] == 3:
                 optimized_value += topping_two[1] / 2.0
 
-            # CD
+            # DMG Resist
             if substats[0] == 4:
                 optimized_value += topping_one[1] / 6.0
             if substats[1] == 4:
@@ -192,19 +192,19 @@ class SubstatOptimizer:
                     atk_spd_value: float = float(match.group(1))
                     self.__atk_spd_list.append((topping_number, atk_spd_value))
 
-                # CRIT Regex
+                # CRIT% Regex
                 match: Optional[re.Match] = re.search(r"CRIT%\s+(\d+(?:\.\d+)?)%", line)
                 if match:
                     crit_value: float = float(match.group(1))
                     self.__crit_list.append((topping_number, crit_value))
 
-                # CD Regex
+                # Cooldown Regex
                 match: Optional[re.Match] = re.search(r"Cooldown\s+(\d+(?:\.\d+)?)%", line)
                 if match:
                     cd_value: float = float(match.group(1))
                     self.__cd_list.append((topping_number, cd_value))
 
-                # DR Regex
+                # DMG Resist Regex
                 match: Optional[re.Match] = re.search(r"DMG Resist\s+(\d+(?:\.\d+)?)%", line)
                 if match:
                     dr_value: float = float(match.group(1))
@@ -213,7 +213,7 @@ class SubstatOptimizer:
 def print_two_substats(optimized_list: list) -> None:
     # We order from the highest to lowest optimized value
     # x[1] represents the second element of the tuple, meaning the optimized value
-    optimized_list.sort(key=lambda x: x[1], reverse=True)
+    optimized_list.sort(key = lambda x: x[1], reverse = True)
 
     iterator: int = 1
     print("[The maximum value with 2 substats is: 2.0]")
@@ -224,7 +224,7 @@ def print_two_substats(optimized_list: list) -> None:
 def print_three_substats(optimized_list: list) -> None:
     # We order from the highest to lowest optimized value
     # x[1] represents the second element of the tuple, meaning the optimized value
-    optimized_list.sort(key=lambda x: x[1], reverse=True)
+    optimized_list.sort(key = lambda x: x[1], reverse = True)
 
     iterator: int = 1
     print("[The maximum value with 3 substats is: 3.0]")

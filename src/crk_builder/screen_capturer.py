@@ -9,7 +9,7 @@ class ScreenCapturer:
     def __init__(self, rows: int):
         self.__rows             : int = rows
         self.__screenshot_folder: str = ""
-        self.__topping_number   : int = 1
+        self.__topping_number   : int = 1 # Number to differentiate screenshots
 
         self.__reset_folder()
 

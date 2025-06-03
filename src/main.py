@@ -3,6 +3,8 @@ from crk_builder.substat_optimizer    import SubstatOptimizer
 from crk_builder.text_extractor       import TextExtractor
 from crk_builder.utils.window_manager import WindowManager
 
+# CRK VERSION 6.4.102
+
 # [Warning]: Make sure your BS5 instance is named as follows, otherwise it will not work
 WINDOW_NAME: str = "BlueStacks App Player"
 
