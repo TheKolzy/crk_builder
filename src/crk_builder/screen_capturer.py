@@ -26,7 +26,7 @@ class ScreenCapturer:
         current_block  : int = 1 # Every 4 rows increases by 1
         current_row    : int = 1
 
-        # Safety timeout for the window to be maximized
+        # Safety timeout for the window to be maximized before screen capture
         time.sleep(1)
 
         # Iteration of the rows
