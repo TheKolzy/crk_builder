@@ -4,31 +4,31 @@ import os
 import pytesseract
 
 class TextExtractor:
-    # Rows is used to know how many toppings there are
+    # The rows are used to know the number of toppings there are
     def __init__(self, rows: int):
         self.__topping_count: int = rows * 5
 
     def process_images(self) -> None:
-        # Get paths
+        # Calculate paths for files/folders
         current_path     : str = os.path.dirname(os.path.abspath(__file__))
         screenshot_folder: str = os.path.abspath(os.path.join(current_path
             , "..", "..", "topping_screenshots"))
         text_path        : str = os.path.abspath(os.path.join(current_path
             , "..", "..", "topping_substats.txt"))
 
-        # Delete and create a new text file every time
+        # Empty the text file before writing to it
         open(text_path, 'w').close()
 
-        # In the range() function we increment by 1 because it's exclusive
-        for topping_number in range(1, self.__topping_count + 1):
-            # Read and extract the text from the screenshots
+        # The second argument of the range() function is exclusive, so we increase by 1
+        for topping in range(1, self.__topping_count + 1):
+            # Loads and extracts the substats from the topping screenshot
             screenshot_path   : str   = os.path.join(screenshot_folder, "topping_capture_"
-                + str(topping_number) + ".png")
+                + str(topping) + ".png")
             topping_screenshot: Image = Image.open(screenshot_path)
             topping_text      : str   = pytesseract.image_to_string(topping_screenshot)
 
-            # Write topping_text inside the text file (appending)
+            # Writes the topping substats to a text file
             with open(text_path, "a") as topping_file:
-                topping_file.write("[Topping " + str(topping_number) + "]\n")
+                topping_file.write("[Topping " + str(topping) + "]\n")
                 topping_file.write(topping_text)
                 topping_file.write("\n")
