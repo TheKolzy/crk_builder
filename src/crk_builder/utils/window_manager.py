@@ -9,7 +9,7 @@ class WindowManager:
         self.__window_name: str                   = window_name
         self.__window     : Optional[Win32Window] = None
 
-    # Sets the window in full screen mode, assuming a screen size of 1920x1080
+    # Changes the window to full screen mode, assuming a screen size of 1920x1080
     def configure_window(self) -> bool:
         if not self.__find_window():
             return False
@@ -24,7 +24,7 @@ class WindowManager:
             print(f"[Error]: The \"{self.__window_name}\" window could not be found.")
             return False
 
-        # The first element is the window
+        # The first element in the list is the specified window
         self.__window = window_list[0]
         return True
 
@@ -37,13 +37,14 @@ class WindowManager:
             self.__window.activate()
 
         if not self.__is_fullscreen():
+            # BS5 specific keyboard shortcut
             pag.press("F11")
 
     def __is_fullscreen(self) -> bool:
-        # Error tolerance +/- 1 with abs() function
+        # Along with the abs() function, there will be an error tolerance of +/- 1
         threshold: int = 1
         return (
-            # For BS5 it's: 0, 0, 1920, 1080
+            # Full screen size in BS5 is: 0, 0, 1920, 1080
             abs(self.__window.left) <= threshold and
             abs(self.__window.top ) <= threshold and
             abs(self.__window.width  - pag.size().width ) <= threshold and

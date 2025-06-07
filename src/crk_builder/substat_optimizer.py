@@ -6,7 +6,7 @@ import re
 class SubstatOptimizer:
     def __init__(self):
         # List of tuples: (topping number, value)
-        # I also specify the number of each list for later use
+        # Specifying the number of each list for later use
         self.__atk_list    : list = [] # 0
         self.__atk_spd_list: list = [] # 1
         self.__crit_list   : list = [] # 2
@@ -163,16 +163,16 @@ class SubstatOptimizer:
 
         return optimized_list
 
-    # Extracts the topping number and its substat in the list that belongs to it.
+    # Extract the topping number and its substat in the list that belongs to it
     def __extract_substats(self) -> None:
-        # Get paths
+        # Get the path of the substats file
         current_path: str = os.path.dirname(os.path.abspath(__file__))
-        text_path   : str = os.path.abspath(os.path.join(current_path
+        text_file   : str = os.path.abspath(os.path.join(current_path
             , "..", "..", "topping_substats.txt"))
 
-        # Read the text file to extract the substats
-        with open(text_path, "r") as topping_file:
-            # It will indicate the number of the topping we are working with
+        # Read the substats file to extract the substats
+        with open(text_file, "r") as topping_file:
+            # Number used to differentiate toppings
             topping_number: int = 0
             for line in topping_file:
                 # Topping Number Regex
