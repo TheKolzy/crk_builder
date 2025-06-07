@@ -9,6 +9,7 @@ class ScreenCapturer:
     def __init__(self, rows: int):
         self.__rows              : int = rows
         self.__screenshots_folder: str = ""
+        self.__topping_number    : int = 1 # Number used to differentiate topping screenshots
 
         self.__clean_folder()
 
@@ -85,14 +86,12 @@ class ScreenCapturer:
             os.makedirs(self.__screenshots_folder)
 
     def __take_screenshot(self) -> None:
-        # Number used to differentiate topping screenshots
-        topping_number: int = 1
         # Create a path for every topping screenshot
         screenshot_file: str = os.path.join(self.__screenshots_folder, "topping_capture_"
-            + str(topping_number) + ".png")
+            + str(self.__topping_number) + ".png")
 
         # To adjust the size of the screenshot, first set the X and Y, then Width and Height
         # X (+ Right, - Left), Y (+ Down, - Up), Width, Height
         topping_screenshot: Image = pag.screenshot(region = (120, 635, 740, 180))
         topping_screenshot.save(screenshot_file)
-        topping_number += 1
+        self.__topping_number += 1
