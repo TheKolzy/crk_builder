@@ -16,7 +16,7 @@ class SubstatOptimizer:
     def perform_optimization(self, substats: tuple[int, ...]) -> None:
         self.__extract_substats()
 
-        # You can only specify 2 or 3 substats
+        # Only 2 or 3 substats can be specified at the same time
         if len(substats) < 2 or len(substats) > 3:
             return
 
@@ -166,12 +166,12 @@ class SubstatOptimizer:
     # Extract the topping number and its substat in the list that belongs to it
     def __extract_substats(self) -> None:
         # Get the path of the substats file
-        current_path: str = os.path.dirname(os.path.abspath(__file__))
-        text_file   : str = os.path.abspath(os.path.join(current_path
+        current_path : str = os.path.dirname(os.path.abspath(__file__))
+        substats_file: str = os.path.abspath(os.path.join(current_path
             , "..", "..", "topping_substats.txt"))
 
         # Read the substats file to extract the substats
-        with open(text_file, "r") as topping_file:
+        with open(substats_file, "r") as topping_file:
             # Number used to differentiate toppings
             topping_number: int = 0
             for line in topping_file:
