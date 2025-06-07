@@ -91,7 +91,7 @@ class ScreenCapturer:
         screenshot_file: str = os.path.join(self.__screenshots_folder, "topping_capture_"
             + str(topping_number) + ".png")
 
-        # To adjust the size of the screenshot, first set the X and Y, then the Width and Height
+        # To adjust the size of the screenshot, first set the X and Y, then Width and Height
         # X (+ Right, - Left), Y (+ Down, - Up), Width, Height
         topping_screenshot: Image = pag.screenshot(region = (120, 635, 740, 180))
         topping_screenshot.save(screenshot_file)
