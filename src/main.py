@@ -11,8 +11,8 @@ WINDOW_NAME: str = "BlueStacks App Player"
 ROWS       : int = 1
 
 # Only 2 or 3 substats can be specified at the same time
-# | 0 ATK | 1 ATK SPD | 2 CRIT% | 3 Cooldown | 4 DMG Resist |
-SUBSTATS   : tuple[int, ...] = (3, 4)
+# | 0 ATK | 1 HP | 2 ATK SPD | 3 CRIT% | 4 Cooldown | 5 DMG Resist |
+SUBSTATS   : tuple[int, ...] = (1, 4)
 
 def main() -> None:
     wm: WindowManager    = WindowManager(WINDOW_NAME)

@@ -8,12 +8,13 @@ class SubstatOptimizer:
         # List of tuples, each containing: (topping index, value)
 
         # Specifying the index of each list for later use
-        # | 0 ATK | 1 ATK SPD | 2 CRIT% | 3 Cooldown | 4 DMG Resist |
+        # | 0 ATK | 1 HP | 2 ATK SPD | 3 CRIT% | 4 Cooldown | 5 DMG Resist |
         self.__atk_list    : list = [] # 0
-        self.__atk_spd_list: list = [] # 1
-        self.__crit_list   : list = [] # 2
-        self.__cd_list     : list = [] # 3
-        self.__dr_list     : list = [] # 4
+        self.__hp_list     : list = [] # 1
+        self.__atk_spd_list: list = [] # 2
+        self.__crit_list   : list = [] # 3
+        self.__cd_list     : list = [] # 4
+        self.__dr_list     : list = [] # 5
 
     def perform_optimization(self, substats: tuple[int, ...]) -> None:
         self.__extract_substats()
@@ -34,8 +35,8 @@ class SubstatOptimizer:
 
     def __optimize_three_substats(self, substats: tuple[int, ...]) -> list:
         # Help list to find the specified substats
-        substat_list: list = [self.__atk_list, self.__atk_spd_list, self.__crit_list
-            , self.__cd_list, self.__dr_list]
+        substat_list: list = [self.__atk_list, self.__hp_list, self.__atk_spd_list
+            , self.__crit_list, self.__cd_list, self.__dr_list]
 
         # List with the optimized values
         optimized_list: list = []
@@ -76,28 +77,28 @@ class SubstatOptimizer:
             # substats[2] is the third substat specified
             # topping_one/two/three[1] is the value of the topping
 
-            # ATK, ATK SPD, CRIT%
-            if substats[0] in (0, 1, 2):
+            # ATK, HP, ATK SPD, CRIT%
+            if substats[0] in (0, 1, 2, 3):
                 optimized_value += topping_one[1] / 3.0
-            if substats[1] in (0, 1, 2):
+            if substats[1] in (0, 1, 2, 3):
                 optimized_value += topping_two[1] / 3.0
-            if substats[2] in (0, 1, 2):
+            if substats[2] in (0, 1, 2, 3):
                 optimized_value += topping_three[1] / 3.0
 
             # Cooldown
-            if substats[0] == 3:
+            if substats[0] == 4:
                 optimized_value += topping_one[1] / 2.0
-            if substats[1] == 3:
+            if substats[1] == 4:
                 optimized_value += topping_two[1] / 2.0
-            if substats[2] == 3:
+            if substats[2] == 4:
                 optimized_value += topping_three[1] / 2.0
 
             # DMG Resist
-            if substats[0] == 4:
+            if substats[0] == 5:
                 optimized_value += topping_one[1] / 6.0
-            if substats[1] == 4:
+            if substats[1] == 5:
                 optimized_value += topping_two[1] / 6.0
-            if substats[2] == 4:
+            if substats[2] == 5:
                 optimized_value += topping_three[1] / 6.0
 
             # We add the value to the optimized list
@@ -109,8 +110,8 @@ class SubstatOptimizer:
 
     def __optimize_two_substats(self, substats: tuple[int, ...]) -> list:
         # Help list to find the specified substats
-        substat_list: list = [self.__atk_list, self.__atk_spd_list, self.__crit_list
-            , self.__cd_list, self.__dr_list]
+        substat_list: list = [self.__atk_list, self.__hp_list, self.__atk_spd_list
+            , self.__crit_list, self.__cd_list, self.__dr_list]
 
         # List with the optimized values
         optimized_list: list = []
@@ -142,22 +143,22 @@ class SubstatOptimizer:
             # substats[0] is the first substat specified and substats[1] is the second substat specified
             # topping_one/two[1] is the value of the topping
 
-            # ATK, ATK SPD, CRIT%
-            if substats[0] in (0, 1, 2):
+            # ATK, HP, ATK SPD, CRIT%
+            if substats[0] in (0, 1, 2, 3):
                 optimized_value += topping_one[1] / 3.0
-            if substats[1] in (0, 1, 2):
+            if substats[1] in (0, 1, 2, 3):
                 optimized_value += topping_two[1] / 3.0
 
             # Cooldown
-            if substats[0] == 3:
+            if substats[0] == 4:
                 optimized_value += topping_one[1] / 2.0
-            if substats[1] == 3:
+            if substats[1] == 4:
                 optimized_value += topping_two[1] / 2.0
 
             # DMG Resist
-            if substats[0] == 4:
+            if substats[0] == 5:
                 optimized_value += topping_one[1] / 6.0
-            if substats[1] == 4:
+            if substats[1] == 5:
                 optimized_value += topping_two[1] / 6.0
 
             # We add the value to the optimized list
@@ -189,6 +190,12 @@ class SubstatOptimizer:
                 if match:
                     atk_value: float = float(match.group(1))
                     self.__atk_list.append((topping_index, atk_value))
+
+                # HP Regex
+                match: Optional[re.Match] = re.search(r"HP\s+(\d+(?:\.\d+)?)%", line)
+                if match:
+                    hp_value: float = float(match.group(1))
+                    self.__hp_list.append((topping_index, hp_value))
 
                 # ATK SPD Regex
                 match: Optional[re.Match] = re.search(r"ATK SPD\s+(\d+(?:\.\d+)?)%", line)
