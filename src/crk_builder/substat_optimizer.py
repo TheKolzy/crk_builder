@@ -5,8 +5,10 @@ import re
 
 class SubstatOptimizer:
     def __init__(self):
-        # List of tuples: (topping number, value)
-        # Specifying the number of each list for later use
+        # List of tuples, each containing: (topping index, value)
+
+        # Specifying the index of each list for later use
+        # | 0 ATK | 1 ATK SPD | 2 CRIT% | 3 Cooldown | 4 DMG Resist |
         self.__atk_list    : list = [] # 0
         self.__atk_spd_list: list = [] # 1
         self.__crit_list   : list = [] # 2
@@ -48,21 +50,22 @@ class SubstatOptimizer:
         matched_substat_three: list = []
 
         # Check and put in the new lists the toppings that contain these three substats
-        # topping_one/two/three is the tuple (topping_position, topping_value)
+        # Variable topping_one/two/three is the tuple (topping_index, topping_value)
         for topping_one in substat_one_list:
             for topping_two in substat_two_list:
-                # topping_one[0] is the position of the topping
+                # Variable topping_one/two/three[0] is the index of the topping
                 if topping_one[0] == topping_two[0]:
                     # The current topping contains the two substats
-                    # But we need to contain three not two
+                    # But we need to contain three so we make another for loop
                     for topping_three in substat_three_list:
                         if topping_one[0] == topping_three[0]:
                             # The current topping contains the three substats
-                            # topping_one[1] is the value of the topping
+                            # topping_one/two/three[1] is the value of the topping
                             matched_substat_one.append((topping_one[0], topping_one[1]))
                             matched_substat_two.append((topping_two[0], topping_two[1]))
                             matched_substat_three.append((topping_three[0], topping_three[1]))
 
+        # Once we have the toppings that share substats, we optimize
         for topping_one, topping_two, topping_three in (zip
             (matched_substat_one, matched_substat_two, matched_substat_three)):
             # Will be used to store and insert the optimized value in the list
@@ -89,7 +92,7 @@ class SubstatOptimizer:
             if substats[2] == 3:
                 optimized_value += topping_three[1] / 2.0
 
-            # Damage Resist
+            # DMG Resist
             if substats[0] == 4:
                 optimized_value += topping_one[1] / 6.0
             if substats[1] == 4:
@@ -98,7 +101,7 @@ class SubstatOptimizer:
                 optimized_value += topping_three[1] / 6.0
 
             # We add the value to the optimized list
-            # topping_one[0] is the topping position
+            # Variable topping_one/two/three[0] is the topping index
             # As they are the same, it doesn't matter
             optimized_list.append((topping_one[0], optimized_value))
 
@@ -120,16 +123,17 @@ class SubstatOptimizer:
         matched_substat_two: list = []
 
         # Check and put in the new lists the toppings that contain these two substats
-        # topping_one/two is the tuple (topping_position, topping_value)
+        # Variable topping_one/two is the tuple (topping_index, topping_value)
         for topping_one in substat_one_list:
             for topping_two in substat_two_list:
-                # topping_one[0] is the position of the topping
+                # Variable topping_one/two[0] is the index of the topping
                 if topping_one[0] == topping_two[0]:
                     # The current topping contains both substats
-                    # topping_one[1] is the value of the topping
+                    # Variable topping_one/two[1] is the value of the topping
                     matched_substat_one.append((topping_one[0], topping_one[1]))
                     matched_substat_two.append((topping_two[0], topping_two[1]))
 
+        # Once we have the toppings that share substats, we optimize
         for topping_one, topping_two in zip(matched_substat_one, matched_substat_two):
             # Will be used to store and insert the optimized value in the list
             optimized_value: float = 0
@@ -157,64 +161,65 @@ class SubstatOptimizer:
                 optimized_value += topping_two[1] / 6.0
 
             # We add the value to the optimized list
-            # topping_one[0] is the topping position
+            # topping_one[0] and topping_two[0] is the topping index
             # As they are the same, it doesn't matter
             optimized_list.append((topping_one[0], optimized_value))
 
         return optimized_list
 
-    # Extract the topping number and its substat in the list that belongs to it
+    # Extract the topping index and its substats in the list that belongs to it
     def __extract_substats(self) -> None:
         # Get the path of the substats file
         current_path : str = os.path.dirname(os.path.abspath(__file__))
         substats_file: str = os.path.abspath(os.path.join(current_path
             , "..", "..", "topping_substats.txt"))
 
-        # Read the substats file to extract the substats
+        # Read the file to extract the substats
         with open(substats_file, "r") as topping_file:
             # Number used to differentiate toppings
-            topping_number: int = 0
+            topping_index: int = 0
             for line in topping_file:
                 # Topping Number Regex
                 match: Optional[re.Match] = re.search(r"\[Topping (\d+)]", line)
                 if match:
-                    topping_number = int(match.group(1))
+                    topping_index = int(match.group(1))
 
                 # ATK Regex
                 match: Optional[re.Match] = re.search(r"ATK\s+(\d+(?:\.\d+)?)%", line)
                 if match:
                     atk_value: float = float(match.group(1))
-                    self.__atk_list.append((topping_number, atk_value))
+                    self.__atk_list.append((topping_index, atk_value))
 
                 # ATK SPD Regex
                 match: Optional[re.Match] = re.search(r"ATK SPD\s+(\d+(?:\.\d+)?)%", line)
                 if match:
                     atk_spd_value: float = float(match.group(1))
-                    self.__atk_spd_list.append((topping_number, atk_spd_value))
+                    self.__atk_spd_list.append((topping_index, atk_spd_value))
 
                 # CRIT% Regex
                 match: Optional[re.Match] = re.search(r"CRIT%\s+(\d+(?:\.\d+)?)%", line)
                 if match:
                     crit_value: float = float(match.group(1))
-                    self.__crit_list.append((topping_number, crit_value))
+                    self.__crit_list.append((topping_index, crit_value))
 
                 # Cooldown Regex
                 match: Optional[re.Match] = re.search(r"Cooldown\s+(\d+(?:\.\d+)?)%", line)
                 if match:
                     cd_value: float = float(match.group(1))
-                    self.__cd_list.append((topping_number, cd_value))
+                    self.__cd_list.append((topping_index, cd_value))
 
                 # DMG Resist Regex
                 match: Optional[re.Match] = re.search(r"DMG Resist\s+(\d+(?:\.\d+)?)%", line)
                 if match:
                     dr_value: float = float(match.group(1))
-                    self.__dr_list.append((topping_number, dr_value))
+                    self.__dr_list.append((topping_index, dr_value))
 
 def print_two_substats(optimized_list: list) -> None:
     # We order from the highest to lowest optimized value
-    # x[1] represents the second element of the tuple, meaning the optimized value
+    # Variable x[1] represents the second element of the tuple, meaning the optimized value
     optimized_list.sort(key = lambda x: x[1], reverse = True)
 
+    # To ensure that all the toppings have been read, for the developer
     iterator: int = 1
     print("[The maximum value with 2 substats is: 2.0]")
     for topping_position, topping_score in optimized_list:
@@ -223,9 +228,10 @@ def print_two_substats(optimized_list: list) -> None:
 
 def print_three_substats(optimized_list: list) -> None:
     # We order from the highest to lowest optimized value
-    # x[1] represents the second element of the tuple, meaning the optimized value
+    # Variable x[1] represents the second element of the tuple, meaning the optimized value
     optimized_list.sort(key = lambda x: x[1], reverse = True)
 
+    # To ensure that all the toppings have been read, for the developer
     iterator: int = 1
     print("[The maximum value with 3 substats is: 3.0]")
     for topping_position, topping_score in optimized_list:

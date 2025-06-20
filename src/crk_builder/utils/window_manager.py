@@ -24,7 +24,7 @@ class WindowManager:
             print(f"[Error]: The \"{self.__window_name}\" window could not be found.")
             return False
 
-        # The first element in the list is the specified window
+        # The first element in the list is the window we are looking for
         self.__window = window_list[0]
         return True
 
@@ -37,7 +37,7 @@ class WindowManager:
             self.__window.activate()
 
         if not self.__is_fullscreen():
-            # BS5 specific keyboard shortcut
+            # BS5 specific keyboard shortcut to put in full screen mode
             pag.press("F11")
 
     def __is_fullscreen(self) -> bool:

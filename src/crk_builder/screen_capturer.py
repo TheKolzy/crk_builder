@@ -32,7 +32,7 @@ class ScreenCapturer:
         # Iteration of the rows
         # The second argument of the range() function is exclusive, so we increase by 1
         for row in range(1, self.__rows + 1):
-            # Scrolls one block (four rows)
+            # Scrolls one block (four rows) upwards
             if (current_row > 4 and ((current_row - 1) % 4) == 0
                     and self.__rows >= current_block * 4):
                 pag.click(1085, 325 + (next_topping * 3)) # Topping at position [4, 1]
@@ -44,7 +44,7 @@ class ScreenCapturer:
                 # Reset coordinates to the topping at position [1, 1]
                 first_topping_x = 1085
                 first_topping_y = 325
-            # Scrolls one row
+            # Scrolls one row upwards
             elif current_row > 4 and self.__rows < current_block * 4:
                 pag.click(1085, 325 + (next_topping * 3)) # Topping at position [4, 1]
                 pag.mouseDown()
@@ -62,7 +62,7 @@ class ScreenCapturer:
                 pag.click(first_topping_x, first_topping_y)
                 time.sleep(0.25)
                 self.__take_screenshot()
-                first_topping_x += next_topping  # Move to the next column
+                first_topping_x += next_topping  # Move to the next column/topping on the same row
 
             # The entire row has been iterated, now start with the row below
             first_topping_x  = 1085
