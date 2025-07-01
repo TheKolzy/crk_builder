@@ -12,7 +12,7 @@ ROWS       : int = 1
 
 # Only 2 or 3 substats can be specified at the same time
 # | 0 ATK | 1 HP | 2 ATK SPD | 3 CRIT% | 4 Cooldown | 5 DMG Resist |
-SUBSTATS   : tuple[int, ...] = (1, 4)
+SUBSTATS   : tuple[int, ...] = (4, 5)
 
 def main() -> None:
     wm: WindowManager    = WindowManager(WINDOW_NAME)
@@ -25,7 +25,7 @@ def main() -> None:
     te: TextExtractor    = TextExtractor(ROWS)
     te.process_image()
 
-    so: SubstatOptimizer = SubstatOptimizer()
+    so: SubstatOptimizer = SubstatOptimizer(True)
     so.perform_optimization(SUBSTATS)
 
 if __name__ == "__main__":

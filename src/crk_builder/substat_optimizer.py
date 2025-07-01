@@ -4,7 +4,7 @@ import os
 import re
 
 class SubstatOptimizer:
-    def __init__(self):
+    def __init__(self, strict: bool):
         # List of tuples, each containing: (topping index, value)
 
         # Specifying the index of each list for later use
@@ -15,6 +15,7 @@ class SubstatOptimizer:
         self.__crit_list   : list = [] # 3
         self.__cd_list     : list = [] # 4
         self.__dr_list     : list = [] # 5
+        self.__strict      : bool = strict # To make the optimization stricter
 
     def perform_optimization(self, substats: tuple[int, ...]) -> None:
         self.__extract_substats()
@@ -26,7 +27,7 @@ class SubstatOptimizer:
         # Case of 2 substats
         if len(substats) == 2:
             optimized_list: list = self.__optimize_two_substats(substats)
-            print_two_substats(optimized_list)
+            self.__print_two_substats(optimized_list)
 
         # Case of 3 substats
         if len(substats) == 3:
@@ -145,21 +146,45 @@ class SubstatOptimizer:
 
             # ATK, HP, ATK SPD, CRIT%
             if substats[0] in (0, 1, 2, 3):
-                optimized_value += topping_one[1] / 3.0
+                if self.__strict == True:
+                    if topping_one[1] >= 2.0:
+                        optimized_value += topping_one[1] / 3.0
+                else:
+                    optimized_value += topping_one[1] / 3.0
             if substats[1] in (0, 1, 2, 3):
-                optimized_value += topping_two[1] / 3.0
+                if self.__strict == True:
+                    if topping_two[1] > 2.0:
+                        optimized_value += topping_two[1] / 3.0
+                else:
+                    optimized_value += topping_two[1] / 3.0
 
             # Cooldown
             if substats[0] == 4:
-                optimized_value += topping_one[1] / 2.0
+                if self.__strict == True:
+                    if topping_one[1] >= 1.5:
+                        optimized_value += topping_one[1] / 2.0
+                else:
+                    optimized_value += topping_one[1] / 2.0
             if substats[1] == 4:
-                optimized_value += topping_two[1] / 2.0
+                if self.__strict == True:
+                    if topping_two[1] >= 1.5:
+                        optimized_value += topping_two[1] / 2.0
+                else:
+                    optimized_value += topping_two[1] / 2.0
 
             # DMG Resist
             if substats[0] == 5:
-                optimized_value += topping_one[1] / 6.0
+                if self.__strict == True:
+                    if topping_one[1] >= 5.0:
+                        optimized_value += topping_one[1] / 6.0
+                else:
+                    optimized_value += topping_one[1] / 6.0
             if substats[1] == 5:
-                optimized_value += topping_two[1] / 6.0
+                if self.__strict == True:
+                    if topping_two[1] >= 5.0:
+                        optimized_value += topping_two[1] / 6.0
+                else:
+                    optimized_value += topping_two[1] / 6.0
 
             # We add the value to the optimized list
             # topping_one[0] and topping_two[0] is the topping index
@@ -221,17 +246,22 @@ class SubstatOptimizer:
                     dr_value: float = float(match.group(1))
                     self.__dr_list.append((topping_index, dr_value))
 
-def print_two_substats(optimized_list: list) -> None:
-    # We order from the highest to lowest optimized value
-    # Variable x[1] represents the second element of the tuple, meaning the optimized value
-    optimized_list.sort(key = lambda x: x[1], reverse = True)
+    def __print_two_substats(self, optimized_list: list) -> None:
+        # We order from the highest to lowest optimized value
+        # Variable x[1] represents the second element of the tuple, meaning the optimized value
+        optimized_list.sort(key = lambda x: x[1], reverse = True)
 
-    # To ensure that all the toppings have been read, for the developer
-    iterator: int = 1
-    print("[The maximum value with 2 substats is: 2.0]")
-    for topping_position, topping_score in optimized_list:
-        print(f"[{iterator}] Topping Position ({topping_position}): Score => {topping_score}")
-        iterator += 1
+        # To ensure that all the toppings have been read, for the developer
+        iterator: int = 1
+        print("[The maximum value with 2 substats is: 2.0]")
+        for topping_position, topping_score in optimized_list:
+            if self.__strict == True:
+                if topping_score > 1.0:
+                    print(f"[{iterator}] Topping Position ({topping_position}): Score => {topping_score}")
+                    iterator += 1
+            else:
+                print(f"[{iterator}] Topping Position ({topping_position}): Score => {topping_score}")
+                iterator += 1
 
 def print_three_substats(optimized_list: list) -> None:
     # We order from the highest to lowest optimized value
