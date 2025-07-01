@@ -182,7 +182,9 @@ class SubstatOptimizer:
 
             # ATK, HP, ATK SPD, CRIT%
             if substats[0] in (0, 1, 2, 3):
+                # If strict optimization is activated
                 if self.__strict == True:
+                    # The higher the value, the better the results, but the quantity also decreases
                     if topping_one[1] >= 2.0:
                         optimized_value += topping_one[1] / 3.0
                 else:
@@ -291,7 +293,9 @@ class SubstatOptimizer:
         iterator: int = 1
         print("[The maximum value with 2 substats is: 2.0]")
         for topping_position, topping_score in optimized_list:
+            # If strict optimization is activated
             if self.__strict == True:
+                # Only consider those that are strictly optimized
                 if topping_score > 1.0:
                     print(f"[{iterator}] Topping Position ({topping_position}): Score => {topping_score}")
                     iterator += 1
