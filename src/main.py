@@ -8,11 +8,11 @@ from crk_builder.utils.window_manager import WindowManager
 # Tested only with BS5 emulator
 WINDOW_NAME: str = "BlueStacks App Player"
 
-ROWS       : int = 1
+ROWS       : int = 2
 
 # Only 2 or 3 substats can be specified at the same time
 # | 0 ATK | 1 HP | 2 ATK SPD | 3 CRIT% | 4 Cooldown | 5 DMG Resist |
-SUBSTATS   : tuple[int, ...] = (4, 5)
+SUBSTATS   : tuple[int, ...] = (4, 5, 0)
 
 def main() -> None:
     wm: WindowManager    = WindowManager(WINDOW_NAME)
