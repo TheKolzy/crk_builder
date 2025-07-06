@@ -121,19 +121,19 @@ class SubstatOptimizer:
             # DMG Resist
             if substats[0] == 5:
                 if self.__strict == True:
-                    if topping_one[1] >= 4.8:
+                    if topping_one[1] >= 4.6:
                         optimized_value += topping_one[1] / 6.0
                 else:
                     optimized_value += topping_one[1] / 6.0
             if substats[1] == 5:
                 if self.__strict == True:
-                    if topping_two[1] >= 4.8:
+                    if topping_two[1] >= 4.6:
                         optimized_value += topping_two[1] / 6.0
                 else:
                     optimized_value += topping_two[1] / 6.0
             if substats[2] == 5:
                 if self.__strict == True:
-                    if topping_three[1] >= 4.8:
+                    if topping_three[1] >= 4.6:
                         optimized_value += topping_three[1] / 6.0
                 else:
                     optimized_value += topping_three[1] / 6.0
@@ -213,13 +213,13 @@ class SubstatOptimizer:
             # DMG Resist
             if substats[0] == 5:
                 if self.__strict == True:
-                    if topping_one[1] >= 4.8:
+                    if topping_one[1] >= 4.6:
                         optimized_value += topping_one[1] / 6.0
                 else:
                     optimized_value += topping_one[1] / 6.0
             if substats[1] == 5:
                 if self.__strict == True:
-                    if topping_two[1] >= 4.8:
+                    if topping_two[1] >= 4.6:
                         optimized_value += topping_two[1] / 6.0
                 else:
                     optimized_value += topping_two[1] / 6.0
